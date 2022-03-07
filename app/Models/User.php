@@ -23,15 +23,15 @@ class User extends Model
         return User::getAccountInfo($token)['localId'];
     }
 
-    public static function getLocalIdByToken($token) {
+    public static function getUserByToken($token) {
         $uid = User::getUIdByToken($token);
         $user = DB::table('users')->where('uid', $uid)->first();
-        if ($user) return $user->id;
+        if ($user) return $user;
         else {
             $user = new User();
             $user->uid = $uid;
             $user->save();
-            return $user->id;
+            return $user;
         }
     }
 

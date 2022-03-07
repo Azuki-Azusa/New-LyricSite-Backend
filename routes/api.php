@@ -20,7 +20,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('lyrics')->group(function () {
-    Route::post('/', [LyricController::class, 'create']);
     Route::get('/all', [LyricController::class, 'getAll']);
+    Route::get('/myUpload/{token}', [LyricController::class, 'getMyUpload']);
+
+
+    Route::post('/', [LyricController::class, 'create']);
     Route::get('/{id}', [LyricController::class, 'read']);
+    Route::put('/', [LyricController::class, 'update']);
+    Route::delete('/{token}/{lyric_id}', [LyricController::class, 'delete']);
 });
