@@ -18,6 +18,7 @@ class CreateLyricsTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->string('title');
             $table->string('video_id');
+            $table->string('creater');
             $table->text('lyric');
             $table->timestamps();
         });

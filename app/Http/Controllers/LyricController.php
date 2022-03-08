@@ -21,9 +21,10 @@ class LyricController extends Controller
         try {
             $user = User::getUserByToken($request->token);
             $lyric = new Lyric();
-            $lyric->title = e($request->title);
-            $lyric->lyric = e($request->lyric);
-            $lyric->video_id = e($request->video_id);
+            $lyric->title = htmlspecialchars($request->title, ENT_NOQUOTES);
+            $lyric->lyric = htmlspecialchars($request->lyric, ENT_NOQUOTES);
+            $lyric->video_id = htmlspecialchars($request->video_id, ENT_NOQUOTES);
+            $lyric->creater = htmlspecialchars($request->creater, ENT_NOQUOTES);
             $lyric->user_id = $user->id;
             $lyric->save();
             return response()->json([
@@ -45,9 +46,10 @@ class LyricController extends Controller
             $user = User::getUserByToken($request->token);
             $lyric = Lyric::find($request->lyric_id);
             if ($user->id == $lyric->user_id) {
-                $lyric->title = e($request->title);
-                $lyric->lyric = e($request->lyric);
-                $lyric->video_id = e($request->video_id);
+                $lyric->title = htmlspecialchars($request->title, ENT_NOQUOTES);
+                $lyric->lyric = htmlspecialchars($request->lyric, ENT_NOQUOTES);
+                $lyric->video_id = htmlspecialchars($request->video_id, ENT_NOQUOTES);
+                $lyric->creater = htmlspecialchars($request->creater, ENT_NOQUOTES);
                 $lyric->save();
                 return response()->json([
                     'state' => 1,
