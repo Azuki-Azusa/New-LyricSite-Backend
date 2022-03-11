@@ -19,6 +19,7 @@ class LyricController extends Controller
 
     public function create(Request $request) {
         try {
+            $this->checkParaOfRequest($request, ['token', 'title', 'lyric', 'video_id', 'creater']);
             $user = User::getUserByToken($request->token);
             $lyric = new Lyric();
             $lyric->title = htmlspecialchars($request->title, ENT_NOQUOTES);
@@ -38,11 +39,12 @@ class LyricController extends Controller
     }
 
     public function read(Request $request, $id) {
-        return response()->json(DB::table('lyrics')->find($id));
+        return $this->successfulRes(DB::table('lyrics')->find($id));
     }
 
     public function update(Request $request) {
         try {
+            $this->checkParaOfRequest($request, ['token', 'title', 'lyric', 'video_id', 'creater']);
             $user = User::getUserByToken($request->token);
             $lyric = Lyric::find($request->lyric_id);
             if ($user->id == $lyric->user_id) {
@@ -83,12 +85,12 @@ class LyricController extends Controller
     }
 
     public function getAll() {
-        return response()->json(DB::table('lyrics')->get());
+        return $this->successfulRes(DB::table('lyrics')->get());
     }
 
     public function getMyUpload(Request $request, $token) {
         try {
-            return response()->json(Lyric::getLyricsByToken($token));
+            return $this->successfulRes(Lyric::getLyricsByToken($token));
         }
         catch (Throwable $e) {
             return $this->throwException($e);
