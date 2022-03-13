@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -15,8 +16,12 @@ class User extends Model
         $response = Http::post('https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=' . env('API_KEY'), [
             "idToken" => $token
         ]);
-        $response->throw();
-        return $response->json()['users'][0];
+        if ($response->successful()) {
+            return $response->json()['users'][0];
+        }
+        else {
+            throw new Exception($response->json('error')['message']);
+        }
     }
 
     public static function getUIdByToken($token) {

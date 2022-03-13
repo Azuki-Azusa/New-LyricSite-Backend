@@ -73,7 +73,7 @@ class LyricController extends Controller
             $lyric = Lyric::find($lyric_id);
             if ($user->id == $lyric->user_id) {
                 $lyric->delete();
-                return response()->json(Lyric::getLyricsByToken($token));
+                return $this->successfulRes(Lyric::getLyricsByToken($token));
             }
             else {
                 throw new Exception('Not match.');
