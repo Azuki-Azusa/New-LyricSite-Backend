@@ -28,10 +28,7 @@ class LyricController extends Controller
             $lyric->creater = htmlspecialchars($request->creater, ENT_NOQUOTES);
             $lyric->user_id = $user->id;
             $lyric->save();
-            return response()->json([
-                'state' => 1,
-                'lyric_id' => $lyric->id,
-            ]);
+            return $this->successfulRes($lyric->id);
         }
         catch (Throwable $e) {
             return $this->throwException($e);
@@ -53,10 +50,7 @@ class LyricController extends Controller
                 $lyric->video_id = htmlspecialchars($request->video_id, ENT_NOQUOTES);
                 $lyric->creater = htmlspecialchars($request->creater, ENT_NOQUOTES);
                 $lyric->save();
-                return response()->json([
-                    'state' => 1,
-                    'lyric_id' => $lyric->id,
-                ]);
+                return $this->successfulRes($lyric->id);
             }
             else {
                 throw new Exception('Not match.');
