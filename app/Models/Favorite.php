@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Favorite extends Model
 {
     use HasFactory;
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function lyric()
+    {
+        return $this->belongsTo(Lyric::class);
+    }
 }

@@ -43,4 +43,8 @@ class User extends Model
     public function lyrics() {
         return $this->hasMany(Lyric::class);
     }
+
+    public function favorites() {
+        return $this->hasMany(Favorite::class);
+    }
 }

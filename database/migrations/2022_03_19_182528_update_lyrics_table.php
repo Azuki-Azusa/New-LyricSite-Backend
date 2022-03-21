@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKeysTable extends Migration
+class UpdateLyricsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateKeysTable extends Migration
      */
     public function up()
     {
-        Schema::create('keys', function (Blueprint $table) {
-            $table->id();
-            $table->string('key');
-            $table->unique('key');
-            $table->text('value');
+        Schema::table('lyrics', function (Blueprint $table) {
+            $table->unsignedSmallInteger('has_furigana');
         });
     }
 
@@ -28,6 +25,6 @@ class CreateKeysTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('keys');
+        //
     }
 }

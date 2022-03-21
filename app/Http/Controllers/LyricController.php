@@ -19,13 +19,14 @@ class LyricController extends Controller
 
     public function create(Request $request) {
         try {
-            $this->checkParaOfRequest($request, ['token', 'title', 'lyric', 'video_id', 'creater']);
+            $this->checkParaOfRequest($request, ['token', 'title', 'lyric', 'video_id', 'creater', 'furigana']);
             $user = User::getUserByToken($request->token);
             $lyric = new Lyric();
             $lyric->title = htmlspecialchars($request->title, ENT_NOQUOTES);
             $lyric->lyric = htmlspecialchars($request->lyric, ENT_NOQUOTES);
             $lyric->video_id = htmlspecialchars($request->video_id, ENT_NOQUOTES);
             $lyric->creater = htmlspecialchars($request->creater, ENT_NOQUOTES);
+            $lyric->furigana = $request->furigana;
             $lyric->user_id = $user->id;
             $lyric->save();
             return $this->successfulRes($lyric->id);
@@ -35,13 +36,13 @@ class LyricController extends Controller
         }
     }
 
-    public function read(Request $request, $id) {
-        return $this->successfulRes(DB::table('lyrics')->find($id));
+    public function read(Request $request, $lyric_id) {
+        return $this->successfulRes(DB::table('lyrics')->find($lyric_id));
     }
 
     public function update(Request $request) {
         try {
-            $this->checkParaOfRequest($request, ['token', 'title', 'lyric', 'video_id', 'creater']);
+            $this->checkParaOfRequest($request, ['token', 'title', 'lyric', 'video_id', 'creater', 'furigana']);
             $user = User::getUserByToken($request->token);
             $lyric = Lyric::find($request->lyric_id);
             if ($user->id == $lyric->user_id) {
@@ -49,6 +50,7 @@ class LyricController extends Controller
                 $lyric->lyric = htmlspecialchars($request->lyric, ENT_NOQUOTES);
                 $lyric->video_id = htmlspecialchars($request->video_id, ENT_NOQUOTES);
                 $lyric->creater = htmlspecialchars($request->creater, ENT_NOQUOTES);
+                $lyric->furigana = $request->furigana;
                 $lyric->save();
                 return $this->successfulRes($lyric->id);
             }
@@ -79,12 +81,12 @@ class LyricController extends Controller
     }
 
     public function getAll() {
-        return $this->successfulRes(DB::table('lyrics')->get());
+        return $this->successfulRes(Lyric::select('id', 'title', 'creater', 'has_furigana', 'video_id')->get());
     }
 
     public function getMyUpload(Request $request, $token) {
         try {
-            return $this->successfulRes(Lyric::getLyricsByToken($token));
+            return $this->successfulRes(Lyric::getUploadByToken($token));
         }
         catch (Throwable $e) {
             return $this->throwException($e);
