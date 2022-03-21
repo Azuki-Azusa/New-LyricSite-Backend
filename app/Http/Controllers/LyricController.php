@@ -19,14 +19,14 @@ class LyricController extends Controller
 
     public function create(Request $request) {
         try {
-            $this->checkParaOfRequest($request, ['token', 'title', 'lyric', 'video_id', 'creater', 'furigana']);
+            $this->checkParaOfRequest($request, ['token', 'title', 'lyric', 'video_id', 'creater', 'has_furigana']);
             $user = User::getUserByToken($request->token);
             $lyric = new Lyric();
             $lyric->title = htmlspecialchars($request->title, ENT_NOQUOTES);
             $lyric->lyric = htmlspecialchars($request->lyric, ENT_NOQUOTES);
             $lyric->video_id = htmlspecialchars($request->video_id, ENT_NOQUOTES);
             $lyric->creater = htmlspecialchars($request->creater, ENT_NOQUOTES);
-            $lyric->furigana = $request->furigana;
+            $lyric->has_furigana = $request->has_furigana;
             $lyric->user_id = $user->id;
             $lyric->save();
             return $this->successfulRes($lyric->id);
@@ -42,7 +42,7 @@ class LyricController extends Controller
 
     public function update(Request $request) {
         try {
-            $this->checkParaOfRequest($request, ['token', 'title', 'lyric', 'video_id', 'creater', 'furigana']);
+            $this->checkParaOfRequest($request, ['token', 'title', 'lyric', 'video_id', 'creater', 'has_furigana']);
             $user = User::getUserByToken($request->token);
             $lyric = Lyric::find($request->lyric_id);
             if ($user->id == $lyric->user_id) {
@@ -50,7 +50,7 @@ class LyricController extends Controller
                 $lyric->lyric = htmlspecialchars($request->lyric, ENT_NOQUOTES);
                 $lyric->video_id = htmlspecialchars($request->video_id, ENT_NOQUOTES);
                 $lyric->creater = htmlspecialchars($request->creater, ENT_NOQUOTES);
-                $lyric->furigana = $request->furigana;
+                $lyric->has_furigana = $request->has_furigana;
                 $lyric->save();
                 return $this->successfulRes($lyric->id);
             }
