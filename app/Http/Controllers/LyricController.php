@@ -92,4 +92,8 @@ class LyricController extends Controller
             return $this->throwException($e);
         }
     }
+
+    public function search(Request $request, $key_word) {
+        return $this->successfulRes(Lyric::where('title', 'like', '%'.$key_word.'%')->orWhere('creater', 'like', '%'.$key_word.'%')->get());
+    }
 }

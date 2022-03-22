@@ -24,7 +24,7 @@ Route::prefix('lyrics')->group(function () {
     Route::get('/all', [LyricController::class, 'getAll']);
     Route::get('/myUpload/{token}', [LyricController::class, 'getMyUpload']);
     Route::get('/myFavorite/{token}', [FavoriteController::class, 'getMyFavorite']);
-
+    Route::get('/search/{key_word}', [LyricController::class, 'search']);
 
     Route::post('/', [LyricController::class, 'create']);
     Route::get('/{lyric_id}', [LyricController::class, 'read']);
