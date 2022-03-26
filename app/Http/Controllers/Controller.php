@@ -30,7 +30,7 @@ class Controller extends BaseController
 
     protected function checkParaOfRequest($request, $parameters) {
         foreach ($parameters as $parameter) {
-            if ($request->input($parameter) == null) {
+            if ($request->input($parameter) === null) {
                 if ($parameter == 'token') {
                     throw new Exception('Please login or refresh page.');
                 }
