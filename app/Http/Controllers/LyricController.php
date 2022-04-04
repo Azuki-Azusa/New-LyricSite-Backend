@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 
 class LyricController extends Controller
 {
@@ -80,8 +81,13 @@ class LyricController extends Controller
         }
     }
 
-    public function getAll() {
-        return $this->successfulRes(Lyric::select('id', 'title', 'creater', 'has_furigana', 'video_id')->get());
+    public function getAll(Request $request) {
+        if (isset($request->page) && isset($request->num)) {
+            return $this->successfulRes(Lyric::select('id', 'title', 'creater', 'has_furigana', 'video_id')->skip($request->page * $request->num)->take($request->num)->get());
+        }
+        else {
+            return $this->successfulRes(Lyric::select('id', 'title', 'creater', 'has_furigana', 'video_id')->get());
+        }
     }
 
     public function getMyUpload(Request $request, $token) {
