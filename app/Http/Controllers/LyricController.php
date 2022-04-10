@@ -83,6 +83,7 @@ class LyricController extends Controller
 
     public function getAll(Request $request) {
         if (isset($request->page) && isset($request->num)) {
+            Log::info($request->page, $request->num);
             return $this->successfulRes(Lyric::select('id', 'title', 'creater', 'has_furigana', 'video_id')->skip($request->page * $request->num)->take($request->num)->get());
         }
         else {
