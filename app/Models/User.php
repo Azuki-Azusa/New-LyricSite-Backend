@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Exception;
+use Illuminate\Contracts\Session\Session;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -29,7 +30,11 @@ class User extends Model
     }
 
     public static function getUserByToken($token) {
-        $uid = User::getUIdByToken($token);
+        $uid = session($token);
+        if (!$uid) {
+            $uid = User::getUIdByToken($token);
+            session($token, $uid);
+        }
         $user = DB::table('users')->where('uid', $uid)->first();
         if ($user) return $user;
         else {
